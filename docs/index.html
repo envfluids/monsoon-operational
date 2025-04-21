@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Grid Forecast & Onset Map</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <!-- PapaParse for CSV parsing -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" defer></script>
+  <script src="assets/js/script.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Current Forecast by Grid Box</h1>
+  </header>
+
+  <section id="forecast-section">
+    <table id="forecast-table">
+      <thead>
+        <tr><th>Latitude</th><th>Longitude</th><th>Forecast</th></tr>
+      </thead>
+      <tbody>
+        <!-- populated by script.js -->
+      </tbody>
+    </table>
+  </section>
+
+  <section id="map-section">
+    <h2>Onset Date & Probability Map</h2>
+    <img src="assets/images/map.png" alt="Grid Map Placeholder">
+    <table id="onset-table">
+      <thead>
+        <tr><th>Latitude</th><th>Longitude</th><th>Onset Date</th><th>Probability</th></tr>
+      </thead>
+      <tbody>
+        <!-- populated by script.js -->
+      </tbody>
+    </table>
+  </section>
+
+  <footer>
+    <p>Built on GitHub Pages</p>
+  </footer>
+</body>
+</html>
