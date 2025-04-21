@@ -12,15 +12,6 @@ function renderTableRows(tbody, rows, columns) {
   }
   
   document.addEventListener('DOMContentLoaded', () => {
-    // 1) Load and display forecast.csv
-    fetch('assets/data/forecast.csv')
-      .then(res => res.text())
-      .then(csv => Papa.parse(csv, { header: true }))
-      .then(results => {
-        const tbody = document.querySelector('#forecast-table tbody');
-        renderTableRows(tbody, results.data, ['lat','lon','forecast']);
-      })
-      .catch(console.error);
   
     // 2) Load and display onset.csv
     fetch('assets/data/onset.csv')
