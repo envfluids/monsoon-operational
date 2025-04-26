@@ -33,7 +33,7 @@ function renderTableRows(tbody, rows, columns) {
 
 document.addEventListener('DOMContentLoaded', () => {
   // Load and display onset.csv
-  fetch('assets/data/onset.csv')
+  fetch('assets/data/blend_output_summary.csv')
     .then(res => res.text()) // Get the response as text
     .then(csv => Papa.parse(csv, { header: true, skipEmptyLines: true })) // Parse the CSV text
     .then(results => {
