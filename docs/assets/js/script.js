@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function initMap() {
       map = L.map('map').setView(initialCenter, initialZoom);
 
-      L.tileLayer('https://a.tiles.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoib3NtaW5kaWEiLCJhIjoiY2x2M2h0dmtnMDB5MzJqbzBsNmhwczJubSJ9.XE-a2USKZUYH4t8rTFEnmg', {
+      L.tileLayer('http://a.tile.opentopomap.org/{z}/{x}/{y}.png', {
           maxZoom: 18,
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
