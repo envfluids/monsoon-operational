@@ -1,309 +1,275 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-  // --- Configuration ---
-  const csvUrl = 'assets/data/blend_output_summary.csv'; // Path to your CSV file
-  const initialCenter = [20.5937, 78.9629]; // Approx center of India
-  const initialZoom = 5;
+    // --- Configuration ---
+    const csvUrl = 'assets/data/blend_output_summary.csv'; // Path to your CSV file
+    const initialCenter = [25, 79.9629]; // Approx center of India
+    const initialZoom = 5;
+    const indiaGeoJsonUrl = 'https://raw.githubusercontent.com/datameet/maps/master/Country/india-osm.geojson'; // Use the RAW file URL
 
-  // Define colors similar to Python's plasma map (approximations)
-  const PERIOD_COLORS = {
-      "just_week1": '#F05929', // Hex equivalent of new Color(240, 89, 41)
-      "weeks12": '#FD952B',    // Hex equivalent of new Color(253, 149, 43)
-      "weeks23": '#E7C750',    // Hex equivalent of new Color(231, 199, 80)
-      "weeks34": '#BCE365',    // Hex equivalent of new Color(188, 227, 101)
-      "weeks4later": '#81EC7D',// Hex equivalent of new Color(129, 236, 125)
-      "later": '#32ECA2',      // Hex equivalent of new Color(50, 236, 162)
-      "none": '#D3D3D3'        // Hex equivalent of Color.LIGHT_GRAY
-  };
+    // Define colors similar to Python's plasma map (approximations)
+    const PERIOD_COLORS = {
+        "just_week1": '#F05929',
+        "weeks12": '#FD952B',
+        "weeks23": '#E7C750',
+        "weeks34": '#BCE365',
+        "weeks4later": '#81EC7D',
+        "later": '#32ECA2',
+        "none": '#D3D3D3'
+    };
 
-  let map;
-  let forecastChart;
-  let allGridData = []; // To store parsed CSV data
+    let map;
+    let forecastChart;
+    let allGridData = [];
+    let gridLayer; // Make gridLayer accessible in broader scope if needed, though not strictly necessary here
 
-  // --- Initialize Leaflet Map ---
-  function initMap() {
-      map = L.map('map').setView(initialCenter, initialZoom);
+    // --- Initialize Leaflet Map ---
+    function initMap() {
+        map = L.map('map', {
+            // Optional: Set a background color
+            // style: 'background-color: #f0f0f0;'
+        }).setView(initialCenter, initialZoom);
 
-      L.tileLayer('http://a.tile.opentopomap.org/{z}/{x}/{y}.png', {
-          maxZoom: 18,
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map);
-  }
-
-  // --- Initialize Chart.js ---
-  function initChart() {
-      const ctx = document.getElementById('forecastChart').getContext('2d');
-      forecastChart = new Chart(ctx, {
-          type: 'bar',
-          data: {
-              labels: [], // Initial empty labels
-              datasets: [{
-                  label: 'Forecast Probability',
-                  data: [], // Initial empty data
-                  backgroundColor: 'rgba(75, 192, 192, 0.6)', // Example color
-                  borderColor: 'rgba(75, 192, 192, 1)',
-                  borderWidth: 1
-              }]
-          },
-          options: {
-              responsive: true,
-              maintainAspectRatio: false, // Allow chart to fill container height
-              plugins: {
-                  title: {
-                      display: true,
-                      text: 'Click a map cell to view forecast'
-                  },
-                  legend: {
-                      display: false // Hide legend for single dataset
-                  }
-              },
-              scales: {
-                  y: {
-                      beginAtZero: true,
-                      max: 1.0, // Probability scale 0-1
-                      title: {
-                          display: true,
-                          text: 'Probability'
-                      }
-                  },
-                  x: {
-                      title: {
-                          display: true,
-                          text: 'Forecast Period'
-                      }
-                  }
-              }
-          }
-      });
-  }
-
-  // --- Load and Process CSV Data ---
-  function loadData() {
-      Papa.parse(csvUrl, {
-          download: true,
-          header: true,
-          skipEmptyLines: true,
-          dynamicTyping: true, // Auto-convert numbers/booleans
-          complete: function(results) {
-              console.log("CSV Parsing Complete:", results);
-              if (results.errors.length > 0) {
-                  console.error("CSV Parsing Errors:", results.errors);
-                  alert("Error parsing CSV data. Check console for details.");
-                  // Display errors appropriately
-              }
-               // Filter out rows with invalid essential data upfront
-              allGridData = results.data.filter(row =>
-                  isValidNumber(row.lat) &&
-                  isValidNumber(row.lon) &&
-                  row.time && // Ensure time exists
-                  isValidNumber(row.week1) &&
-                  isValidNumber(row.week2) &&
-                  isValidNumber(row.week3) &&
-                  isValidNumber(row.week4) &&
-                  isValidNumber(row.later)
-              );
-
-              if (allGridData.length === 0) {
-                  console.warn("No valid data rows found after parsing and filtering.");
-                  alert("Warning: No valid forecast data found in the CSV.");
-                  // Handle empty data scenario
-              } else {
-                  console.log(`Loaded ${allGridData.length} valid data rows.`);
-                  populateMap(allGridData);
-                  populateTable(allGridData); // Populate the HTML table
-              }
-          },
-          error: function(error) {
-               console.error("Error fetching or parsing CSV:", error);
-               alert("Failed to load forecast data. Please check the CSV file path and format.");
-          }
-      });
-  }
-
-   // Helper to check if a value is a valid, non-NaN number
-  function isValidNumber(value) {
-      return typeof value === 'number' && !isNaN(value);
-  }
+        // ** MODIFICATION START: Create a pane for the GeoJSON outline **
+        map.createPane('geoJsonPane');
+        // Set its z-index lower than the overlay pane (default 400)
+        map.getPane('geoJsonPane').style.zIndex = 350;
+        // Ensure pointer events are disabled on the outline itself if it should only be visual
+        map.getPane('geoJsonPane').style.pointerEvents = 'none';
+        // ** MODIFICATION END **
 
 
-  // --- Populate Map with Grid Cells ---
-  function populateMap(data) {
-      const bounds = []; // To calculate overall map bounds
-      const gridLayer = L.layerGroup(); // Use layer group for easier management
+        // Fetch and add the India GeoJSON outline
+        fetch(indiaGeoJsonUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(geojsonData => {
+                L.geoJSON(geojsonData, {
+                    // ** MODIFICATION START: Assign to the custom pane **
+                    pane: 'geoJsonPane',
+                    // ** MODIFICATION END **
+                    style: function (feature) {
+                        return {
+                            color: "#000000",
+                            weight: 1,
+                            opacity: 0.8,
+                            fillOpacity: 0,
+                            // ** IMPORTANT: Make the outline non-interactive **
+                            // interactive: false // Alternative way to disable interaction on the layer itself
+                        };
+                    },
+                     // Ensure the GeoJSON layer itself doesn't capture clicks
+                    interactive: false
+                }).addTo(map);
+                console.log("India GeoJSON layer added successfully to geoJsonPane.");
+            })
+            .catch(error => {
+                console.error('Error fetching or adding GeoJSON layer:', error);
+                alert('Could not load the India map outline. Please check the console or the GeoJSON URL.');
+            });
+    }
 
-      data.forEach(row => {
-          const lat = row.lat;
-          const lon = row.lon;
+    // --- Initialize Chart.js ---
+    // (Keep the initChart function as it was)
+    function initChart() {
+        const ctx = document.getElementById('forecastChart').getContext('2d');
+        forecastChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [], // Initial empty labels
+                datasets: [{
+                    label: 'Forecast Probability',
+                    data: [], // Initial empty data
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)', // Example color
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Click a map cell to view forecast'
+                    },
+                    legend: { display: false }
+                },
+                scales: {
+                    y: { beginAtZero: true, max: 1.0, title: { display: true, text: 'Probability' } },
+                    x: { title: { display: true, text: 'Forecast Period' } }
+                }
+            }
+        });
+    }
 
-          // Calculate cell bounds
-          const cellBounds = [
-              [lat - 1.0, lon - 1.0], // Southwest corner [lat, lon]
-              [lat + 1.0, lon + 1.0]  // Northeast corner [lat, lon]
-          ];
-          bounds.push(cellBounds[0]);
-          bounds.push(cellBounds[1]);
 
-          // Determine cell color
-          const maxPeriod = calculateMaxPeriod(row);
-          const cellColor = PERIOD_COLORS[maxPeriod] || PERIOD_COLORS['none'];
+    // --- Load and Process CSV Data ---
+    // (Keep the loadData function as it was)
+    function loadData() {
+        Papa.parse(csvUrl, {
+            download: true,
+            header: true,
+            skipEmptyLines: true,
+            dynamicTyping: true,
+            complete: function (results) {
+                console.log("CSV Parsing Complete:", results);
+                if (results.errors.length > 0) {
+                    console.error("CSV Parsing Errors:", results.errors);
+                    alert("Error parsing CSV data. Check console for details.");
+                }
+                allGridData = results.data.filter(row =>
+                    isValidNumber(row.lat) && isValidNumber(row.lon) && row.time &&
+                    isValidNumber(row.week1) && isValidNumber(row.week2) &&
+                    isValidNumber(row.week3) && isValidNumber(row.week4) && isValidNumber(row.later)
+                );
+                if (allGridData.length === 0) {
+                    console.warn("No valid data rows found after parsing and filtering.");
+                    alert("Warning: No valid forecast data found in the CSV.");
+                } else {
+                    console.log(`Loaded ${allGridData.length} valid data rows.`);
+                    populateMap(allGridData); // This will add gridLayer to the map
+                    populateTable(allGridData);
+                }
+            },
+            error: function (error) {
+                console.error("Error fetching or parsing CSV:", error);
+                alert("Failed to load forecast data. Please check the CSV file path and format.");
+            }
+        });
+    }
 
-          // Create rectangle
-          const rectangle = L.rectangle(cellBounds, {
-              color: "#333", // Border color
-              weight: 0.5,      // Border weight
-              opacity: 0.6,
-              fillColor: cellColor,
-              fillOpacity: 0.7
-          });
+    // Helper function
+    function isValidNumber(value) {
+        return typeof value === 'number' && !isNaN(value);
+    }
 
-          // Store data with the rectangle for easy access on click
-          rectangle.feature = { properties: row };
 
-          // Add click listener
-          rectangle.on('click', (e) => {
-               // Highlight clicked rectangle (optional)
-               // Maybe reset style of previously clicked? complex state to manage.
-               // e.target.setStyle({ weight: 2, color: 'red' });
-              updateChart(e.target.feature.properties);
-          });
+    // --- Populate Map with Grid Cells ---
+    // (Keep the populateMap function mostly as it was)
+     function populateMap(data) {
+        // const bounds = []; // Bounds calculation might still be useful
+        gridLayer = L.layerGroup(); // Initialize the layer group (if not already global)
 
-          gridLayer.addLayer(rectangle); // Add to layer group
-      });
+        data.forEach(row => {
+            const lat = row.lat;
+            const lon = row.lon;
+            const cellBounds = [[lat - 1.0, lon - 1.0], [lat + 1.0, lon + 1.0]];
+            // bounds.push(cellBounds[0]);
+            // bounds.push(cellBounds[1]);
 
-      gridLayer.addTo(map); // Add all rectangles at once
+            const maxPeriod = calculateMaxPeriod(row);
+            const cellColor = PERIOD_COLORS[maxPeriod] || PERIOD_COLORS['none'];
 
-      // Fit map to the bounds of all grid cells
-      if (bounds.length > 0) {
-          map.fitBounds(bounds, { padding: [20, 20] }); // Add some padding
-      } else {
-           console.warn("No valid bounds calculated for map fitting.");
-      }
-  }
+            const rectangle = L.rectangle(cellBounds, {
+                color: "#333",
+                weight: 0.5,
+                opacity: 0.6,
+                fillColor: cellColor,
+                fillOpacity: 0.7,
+                 // Rectangles should be interactive by default, ensure they are
+                interactive: true // Explicitly set, though true is default
+            });
 
-  // --- Calculate Max Period (JavaScript version) ---
-  function calculateMaxPeriod(data) {
+            rectangle.feature = { properties: row };
+
+            rectangle.on('click', (e) => {
+                 console.log("Rectangle clicked:", e.target.feature.properties); // Add log for debugging
+                 // Optional: add highlight effect
+                 // resetHighlight(); // Function to reset style of previously clicked
+                 // e.target.setStyle({ weight: 2, color: 'red' }); // Highlight current
+                 // Store reference to clicked?
+                updateChart(e.target.feature.properties);
+            });
+
+            gridLayer.addLayer(rectangle);
+        });
+
+        gridLayer.addTo(map); // Add the layer group containing all rectangles
+        // gridLayer will be added to the default 'overlayPane' (zIndex 400)
+        // which is above 'geoJsonPane' (zIndex 350)
+
+        // Optional: Fit bounds
+        // if (bounds.length > 0) {
+        //     map.fitBounds(bounds, { padding: [20, 20] });
+        // } else {
+        //     console.warn("No valid bounds calculated for map fitting.");
+        // }
+        console.log("Grid layer added to map.");
+    }
+
+    // --- Calculate Max Period ---
+    // (Keep the calculateMaxPeriod function as it was)
+    function calculateMaxPeriod(data) {
        if (!data) return "none";
+       const vf = [data.week1 || 0, data.week2 || 0, data.week3 || 0, data.week4 || 0, data.later || 0];
+       if (vf[0] >= 0.5) return 'just_week1';
+       if (vf[4] >= 0.5) return 'later';
+       const sums = [vf[0] + vf[1], vf[1] + vf[2], vf[2] + vf[3], vf[3] + vf[4]];
+       const keys = ['weeks12', 'weeks23', 'weeks34', 'weeks4later'];
+       let maxIdx = 0;
+       let maxSum = sums[0];
+       for (let i = 1; i < sums.length; i++) { if (sums[i] > maxSum) { maxSum = sums[i]; maxIdx = i; } }
+       return (maxSum >= 0.5) ? keys[maxIdx] : 'none';
+   }
 
-      // Ensure probabilities are numbers, default to 0 if not
-       const vf = [
-          data.week1 || 0,
-          data.week2 || 0,
-          data.week3 || 0,
-          data.week4 || 0,
-          data.later || 0
-      ];
 
-
-      if (vf[0] >= 0.5) return 'just_week1';
-      if (vf[4] >= 0.5) return 'later';
-
-      const sums = [
-          vf[0] + vf[1], // weeks12
-          vf[1] + vf[2], // weeks23
-          vf[2] + vf[3], // weeks34
-          vf[3] + vf[4]  // weeks4later
-      ];
-      const keys = ['weeks12', 'weeks23', 'weeks34', 'weeks4later'];
-
-      let maxIdx = 0;
-      let maxSum = sums[0];
-      for (let i = 1; i < sums.length; i++) {
-          if (sums[i] > maxSum) {
-              maxSum = sums[i];
-              maxIdx = i;
-          }
-      }
-
-      return (maxSum >= 0.5) ? keys[maxIdx] : 'none';
-  }
-
-  // --- Update the Bar Chart ---
-  function updateChart(data) {
-      if (!data || !forecastChart) return;
-
-      // Format date labels (assuming 'time' is YYYY-MM-DD string from CSV)
-       let labels = ["Invalid Date"];
-       let chartTitle = `Forecast Probabilities (Lat: ${data.lat}, Lon: ${data.lon})`;
-      try {
-          const baseDate = new Date(data.time + 'T00:00:00'); // Treat as local date
-           if (isNaN(baseDate.getTime())) {
-               throw new Error("Invalid date format in CSV time field");
-           }
-          const options = { month: 'numeric', day: 'numeric' }; // MM/DD format
-
-          const addDays = (date, days) => {
-               const result = new Date(date);
-               result.setDate(result.getDate() + days);
-               return result;
-          };
-
-          const formatDate = (date) => date.toLocaleDateString(undefined, options);
-
-           labels = [
-              `Wk 1 (${formatDate(addDays(baseDate, 1))} - ${formatDate(addDays(baseDate, 7))})`,
-              `Wk 2 (${formatDate(addDays(baseDate, 8))} - ${formatDate(addDays(baseDate, 14))})`,
-              `Wk 3 (${formatDate(addDays(baseDate, 15))} - ${formatDate(addDays(baseDate, 21))})`,
-              `Wk 4 (${formatDate(addDays(baseDate, 22))} - ${formatDate(addDays(baseDate, 28))})`,
-              `Later (${formatDate(addDays(baseDate, 29))}+)`
-          ];
+    // --- Update the Bar Chart ---
+    // (Keep the updateChart function as it was)
+    function updateChart(data) {
+        if (!data || !forecastChart) return;
+        let labels = ["Invalid Date"];
+        let chartTitle = `Forecast Probabilities (Lat: ${data.lat}, Lon: ${data.lon})`;
+        try {
+            const baseDate = new Date(data.time + 'T00:00:00');
+            if (isNaN(baseDate.getTime())) throw new Error("Invalid date format");
+            const options = { month: 'numeric', day: 'numeric' };
+            const addDays = (date, days) => { const result = new Date(date); result.setDate(result.getDate() + days); return result; };
+            const formatDate = (date) => date.toLocaleDateString(undefined, options);
+            labels = [
+                `Wk 1 (${formatDate(addDays(baseDate, 1))} - ${formatDate(addDays(baseDate, 7))})`,
+                `Wk 2 (${formatDate(addDays(baseDate, 8))} - ${formatDate(addDays(baseDate, 14))})`,
+                `Wk 3 (${formatDate(addDays(baseDate, 15))} - ${formatDate(addDays(baseDate, 21))})`,
+                `Wk 4 (${formatDate(addDays(baseDate, 22))} - ${formatDate(addDays(baseDate, 28))})`,
+                `Later (${formatDate(addDays(baseDate, 29))}+)`
+            ];
             chartTitle = `Forecast Probabilities (Lat: ${data.lat}, Lon: ${data.lon}) - Issued: ${formatDate(baseDate)}`;
-
-      } catch (e) {
-           console.error("Error formatting dates:", e);
-           chartTitle = `Forecast Probabilities (Lat: ${data.lat}, Lon: ${data.lon}) - Date Error`;
-      }
-
-
-      // Update chart data
-      forecastChart.data.labels = labels;
-      forecastChart.data.datasets[0].data = [
-          data.week1,
-          data.week2,
-          data.week3,
-          data.week4,
-          data.later
-      ];
-      forecastChart.options.plugins.title.text = chartTitle;
-      forecastChart.update(); // Redraw the chart
-  }
-
-  // --- Function to Populate the HTML Table ---
-  function populateTable(data) {
-      const tbody = document.querySelector('#onset-table tbody');
-      if (!tbody) {
-          console.error('Table body #onset-table tbody not found.');
-          return;
-      }
-      tbody.innerHTML = ''; // Clear existing rows
-
-      // Define which columns need number formatting and desired order
-      const displayColumns = ['lat', 'lon', 'time', 'week1', 'week2', 'week3', 'week4', 'later'];
-      const formatColumns = ['week1', 'week2', 'week3', 'week4', 'later'];
-
-      data.forEach(row => {
-          const tr = document.createElement('tr');
-          displayColumns.forEach(col => {
-              const td = document.createElement('td');
-              let value = row[col];
-
-              // Format numeric columns to fixed decimal places (e.g., 4)
-              if (formatColumns.includes(col) && isValidNumber(value)) {
-                  value = value.toFixed(4); // Adjust decimal places as needed
-              } else if (value === null || value === undefined) {
-                  value = '-'; // Display placeholder for missing values
-              }
-
-              td.textContent = value;
-              tr.appendChild(td);
-          });
-          tbody.appendChild(tr);
-      });
-  }
+        } catch (e) { console.error("Error formatting dates:", e); chartTitle = `Forecast Probabilities (Lat: ${data.lat}, Lon: ${data.lon}) - Date Error`; }
+        forecastChart.data.labels = labels;
+        forecastChart.data.datasets[0].data = [data.week1, data.week2, data.week3, data.week4, data.later];
+        forecastChart.options.plugins.title.text = chartTitle;
+        forecastChart.update();
+    }
 
 
-  // --- Initialize ---
-  initMap();
-  initChart();
-  loadData(); // Load data after map and chart are ready
+    // --- Function to Populate the HTML Table ---
+    // (Keep the populateTable function as it was)
+     function populateTable(data) {
+        const tbody = document.querySelector('#onset-table tbody');
+        if (!tbody) { console.error('Table body #onset-table tbody not found.'); return; }
+        tbody.innerHTML = '';
+        const displayColumns = ['lat', 'lon', 'time', 'week1', 'week2', 'week3', 'week4', 'later'];
+        const formatColumns = ['week1', 'week2', 'week3', 'week4', 'later'];
+        data.forEach(row => {
+            const tr = document.createElement('tr');
+            displayColumns.forEach(col => {
+                const td = document.createElement('td');
+                let value = row[col];
+                if (formatColumns.includes(col) && isValidNumber(value)) { value = value.toFixed(4); }
+                else if (value === null || value === undefined) { value = '-'; }
+                td.textContent = value;
+                tr.appendChild(td);
+            });
+            tbody.appendChild(tr);
+        });
+    }
+
+    // --- Initialize ---
+    initMap();
+    initChart();
+    loadData();
 
 }); // End DOMContentLoaded
