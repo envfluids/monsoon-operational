@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Configuration ---
     const csvUrl = 'assets/data/blend_output_summary.csv'; // Path to your CSV file
     const initialCenter = [25, 79.9629]; // Approx center of India
-    const initialZoom = 5;
+    const initialZoom = 4.5;
     const indiaGeoJsonUrl = 'https://raw.githubusercontent.com/datameet/maps/master/Country/india-osm.geojson'; // Use the RAW file URL
 
     // Define colors similar to Python's plasma map (approximations)
@@ -16,12 +16,20 @@ document.addEventListener('DOMContentLoaded', () => {
         "later": '#32ECA2',
         "none": '#D3D3D3'
     };
-
+    const LEGEND_LABELS = {
+        "just_week1": "Week 1 Only (>=50%)",
+        "weeks12": "Weeks 1-2 Sum (>=50%)",
+        "weeks23": "Weeks 2-3 Sum (>=50%)",
+        "weeks34": "Weeks 3-4 Sum (>=50%)",
+        "weeks4later": "Weeks 4-Later Sum (>=50%)",
+        "later": "Later Only (Wk 5+) (>=50%)",
+        "none": "Below Threshold (<50%)"
+    };
     let map;
     let forecastChart;
     let allGridData = [];
     let gridLayer; // Make gridLayer accessible in broader scope if needed, though not strictly necessary here
-
+    
     // --- Initialize Leaflet Map ---
     function initMap() {
         map = L.map('map', {
@@ -267,9 +275,58 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function addLegendToMap() {
+        const legend = L.control({ position: 'bottomleft' }); // Position the legend
+
+        legend.onAdd = function (map) {
+            const div = L.DomUtil.create('div', 'info legend'); // Create a div with classes
+            let legendHtml = '<h4>Onset Probability Period</h4>'; // Legend title
+
+            // Loop through our period colors and labels
+            for (const periodKey in PERIOD_COLORS) {
+                if (PERIOD_COLORS.hasOwnProperty(periodKey)) {
+                    const color = PERIOD_COLORS[periodKey];
+                    // Use the friendly label, fallback to the key if not found
+                    const label = LEGEND_LABELS[periodKey] || periodKey;
+
+                        // Add a line item to the legend HTML
+                        // Uses an <i> tag for the color swatch, styled via CSS
+                    legendHtml +=
+                        '<div class="legend-item">' +
+                        '<i style="background:' + color + '"></i> ' +
+                        label +
+                        '</div>';
+                }
+            }
+
+            div.innerHTML = legendHtml;
+            return div;
+        };
+
+        legend.addTo(map); // Add the legend control to the map
+        legend.getContainer().addEventListener('mouseover', function () {
+            map.dragging.disable();
+            map.touchZoom.disable();
+            map.doubleClickZoom.disable();
+            map.scrollWheelZoom.disable();
+            map.boxZoom.disable();
+            map.keyboard.disable();
+        });
+
+        legend.getContainer().addEventListener('mouseout', function () {
+                map.dragging.enable();
+                map.touchZoom.enable();
+                map.doubleClickZoom.enable();
+                map.scrollWheelZoom.enable();
+                map.boxZoom.enable();
+                map.keyboard.enable();
+        });
+        
+    }
     // --- Initialize ---
     initMap();
     initChart();
     loadData();
+    addLegendToMap(); // Add the legend to the map
 
 }); // End DOMContentLoaded
