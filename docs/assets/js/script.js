@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Configuration ---
     const csvUrl = 'assets/data/blend_output_summary.csv'; // Path to your CSV file
     const initialCenter = [25, 79.9629]; // Approx center of India
-    const initialZoom = 4.5;
+    const initialZoom = 4;
     const indiaGeoJsonUrl = 'https://raw.githubusercontent.com/datameet/maps/master/Country/india-osm.geojson'; // Use the RAW file URL
 
     // Define colors similar to Python's plasma map (approximations)
