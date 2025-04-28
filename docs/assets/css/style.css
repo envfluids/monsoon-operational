@@ -1,35 +1,78 @@
 body {
-    font-family: sans-serif;
-    margin: 0;
-    padding: 1rem;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-  header, section {
-    margin-bottom: 2rem;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  thead {
-    background: #f0f0f0;
-  }
-  
-  th, td {
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    text-align: center;
-  }
-  
-  img {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    margin: 1rem 0;
-  }
-  
+  font-family: sans-serif;
+  margin: 0;
+  padding: 1rem;
+  /* max-width: 1200px; Allow wider view for map+chart */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+header, section {
+  margin-bottom: 2rem;
+}
+
+/* Make map and chart sit side-by-side */
+#map-chart-container {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  gap: 1rem;       /* Space between map and chart */
+  margin-bottom: 2rem;
+}
+
+/* Style for the Leaflet map container */
+#map {
+  height: 500px; /* Crucial: Map needs a defined height */
+  flex: 1; /* Allow map to grow */
+  min-width: 400px; /* Minimum width */
+  border: 1px solid #ccc;
+}
+
+/* Style for the chart container */
+#chart-container {
+  flex: 1; /* Allow chart to grow */
+  min-width: 350px; /* Minimum width */
+  max-width: 500px; /* Max width */
+  height: 500px; /* Match map height */
+  border: 1px solid #ccc;
+  display: flex; /* Center canvas if needed */
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  box-sizing: border-box; /* Include padding in size */
+}
+
+#forecastChart {
+   max-width: 100%;
+   max-height: 100%;
+}
+
+
+/* Table styling */
+#data-table-section {
+  clear: both; /* Ensure table appears below map/chart if they wrap */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem; /* Space above table */
+}
+
+thead {
+  background: #f0f0f0;
+}
+
+th, td {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  text-align: center;
+  font-size: 0.9em; /* Smaller font for table */
+}
+
+/* Image styling - keep if still relevant */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1rem 0;
+}
