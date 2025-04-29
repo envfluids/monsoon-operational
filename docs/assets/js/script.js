@@ -62,9 +62,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     style: function (feature) {
                         return {
                             color: "#000000",
+                            // Use a lighter color for the outline
+                            fillColor: "#FFFFFF",
                             weight: 1,
                             opacity: 0.8,
-                            fillOpacity: 0,
+                            fillOpacity: 1,
                             // ** IMPORTANT: Make the outline non-interactive **
                             // interactive: false // Alternative way to disable interaction on the layer itself
                         };
@@ -154,6 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function isValidNumber(value) {
         return typeof value === 'number' && !isNaN(value);
     }
+
 
 
     // --- Populate Map with Grid Cells ---
