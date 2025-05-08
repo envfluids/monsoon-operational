@@ -269,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
             displayColumns.forEach(col => {
                 const td = document.createElement('td');
                 let value = row[col];
-                if (formatColumns.includes(col) && isValidNumber(value)) { value = value.toFixed(4); }
+                if (formatColumns.includes(col) && isValidNumber(value)) { value = value.toFixed(3); }
                 else if (value === null || value === undefined) { value = '-'; }
                 td.textContent = value;
                 tr.appendChild(td);
