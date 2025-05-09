@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const csvUrl = 'assets/data/blend_output_summary.csv'; // Path to your CSV file
     const initialCenter = [25, 79.9629]; // Approx center of India
     const initialZoom = 4;
-    const indiaGeoJsonUrl = 'https://raw.githubusercontent.com/datameet/maps/master/Country/india-osm.geojson'; // Use the RAW file URL
+    const indiaGeoPath= 'assets/geography/india-osm.geojson'; // Use the RAW file URL
 
     // Define colors similar to Python's plasma map (approximations)
     const PERIOD_COLORS = {
@@ -47,10 +47,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
         // Fetch and add the India GeoJSON outline
-        fetch(indiaGeoJsonUrl)
+        fetch(indiaGeoPath)
             .then(response => {
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error('Network response was not ok: ' + response.statusText);
                 }
                 return response.json();
             })
@@ -157,12 +157,24 @@ document.addEventListener('DOMContentLoaded', () => {
         return typeof value === 'number' && !isNaN(value);
     }
 
+    function resetHighlight() {
+        gridLayer.eachLayer(function (layer) {
+            if (layer instanceof L.Rectangle) {
+                layer.setStyle({
+                    weight: 0.5,
+                    color: "#333",
+                    fillOpacity: 0.7
+                });
+            }
+        });
+    }
+
 
 
     // --- Populate Map with Grid Cells ---
     // (Keep the populateMap function mostly as it was)
      function populateMap(data) {
-        // const bounds = []; // Bounds calculation might still be useful
+        const bounds = []; // Bounds calculation might still be useful
         gridLayer = L.layerGroup(); // Initialize the layer group (if not already global)
 
         data.forEach(row => {
@@ -190,8 +202,8 @@ document.addEventListener('DOMContentLoaded', () => {
             rectangle.on('click', (e) => {
                  console.log("Rectangle clicked:", e.target.feature.properties); // Add log for debugging
                  // Optional: add highlight effect
-                 // resetHighlight(); // Function to reset style of previously clicked
-                 // e.target.setStyle({ weight: 2, color: 'red' }); // Highlight current
+                 resetHighlight(); // Function to reset style of previously clicked
+                 e.target.setStyle({ weight: 2, color: "rgb(0, 0, 0)" , fill: true, }); // Highlight current
                  // Store reference to clicked?
                 updateChart(e.target.feature.properties);
             });
@@ -205,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Optional: Fit bounds
         // if (bounds.length > 0) {
-        //     map.fitBounds(bounds, { padding: [20, 20] });
+        //     map.fitBounds(bounds, { padding: [80, 80] });
         // } else {
         //     console.warn("No valid bounds calculated for map fitting.");
         // }
