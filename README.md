@@ -2,4 +2,4 @@
 
 This repository hosts the operational monsoon forecast.  
 
-See our [website](https://envfluids.github.io/monsoon-operational/) for more information.
+See our [website](https://humancenteredforecasts.climate.uchicago.edu/forecasting-the-onset-of-the-indian-monsoon/) for more information.
