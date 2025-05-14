@@ -9,7 +9,37 @@ body {
 }
 
 header, section {
-  margin-bottom: 2rem;
+  margin-bottom: 0rem;
+}
+
+.disclaimer {
+  font-style: italic;
+  color: #981515;
+  font-size: 0.9em;
+  margin-top: 10px;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+}
+
+.home-tooltip{
+  background-color: white;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  font-size: 16px;
+  z-index: 1000; /* Ensure it appears above other elements */
+}
+
+#home-map-container {
+  margin-bottom: 2rem; /* Add some space below the map */
+  border: 1px solid #ccc;
+  /* box-shadow: 0 2px 5px rgba(0,0,0,0.1); Optional: subtle shadow */
+}
+
+#home-map {
+  height: 500px; /* Define the height of your map */
+  width: 100%;   /* Make it responsive to container width */
+  background-color: #f0f0f0; /* Light background for the map area */
 }
 
 /* Make map and chart sit side-by-side */
@@ -85,20 +115,20 @@ img {
 .info.legend {
   flex: 1; /* Allow map to grow */
   padding: 10px 12px;
-  font: 12px/1.5 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font: 16px/1.5 'Helvetica Neue', Arial, Helvetica, sans-serif;
   background: white;
   background: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
   /* box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); */
   border-radius: 5px;
   line-height: 18px;
   color: #333; /* Dark grey text */
-  max-width: 250px; /* Optional: constrain width */
+  max-width: 300px; /* Optional: constrain width */
 }
 
 .info.legend h4 {
   margin: 0 0 8px; /* Space below title */
   color: #111; /* Darker title */
-  font-size: 14px;
+  font-size: 18px;
   font-weight: bold;
   text-align: center;
 }

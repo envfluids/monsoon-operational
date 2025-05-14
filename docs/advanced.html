@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Advanced Onset Forecast</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin="" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" defer></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+
+  <script src="assets/js/script.js" defer></script>
+
+</head>
+<body>
+  <header>
+    <p><a href="index.html">&larr; Home</a></p>
+    <p class="disclaimer">
+      The contents of this page are provided solely for informational purposes based on independent analysis and available data. This is <strong>not</strong> an official forecast from the India Meteorological Department (IMD) or any government authority. For official weather information and warnings, please refer directly to the <a href="https://mausam.imd.gov.in" target="_blank">IMD Website</a> or official communications.
+    </p>
+    <h1>Current Forecast by Grid Box</h1>
+    <p>Click on a map grid cell to view its weekly forecast probability.</p>
+  </header>
+
+  <section id="map-chart-container">
+    <div id="map"></div>
+    <div id="chart-container">
+        <canvas id="forecastChart"></canvas>
+    </div>
+  </section>
+
+  <section id="data-table-section">
+      <h2>Forecast Data Table</h2>
+      <table id="onset-table">
+          <thead>
+            <tr><th>Lat</th><th>Lon</th><th>Initiation Time</th><th>Week 1</th><th>Week 2</th><th>Week 3</th><th>Week 4</th><th>Later</th></tr>
+          </thead>
+          <tbody>
+          </tbody>
+      </table>
+  </section>
+</body>
+</html>

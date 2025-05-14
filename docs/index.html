@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Grid Forecast & Onset Map</title>
+  <title>Home</title>
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
@@ -23,41 +23,30 @@
 </head>
 <body>
   <header>
-    <h1>Current Forecast by Grid Box</h1>
-    <p>Click on a map grid cell to view its weekly forecast probability.</p>
+    <h1>Monsoon Onset Forecast</h1>
+    <p id="forecast-issue-date" style="font-style: italic; color: #555;">Loading forecast issue date...</p>
   </header>
-
-  <section id="map-chart-container">
-    <div id="map"></div>
-    <div id="chart-container">
-        <canvas id="forecastChart"></canvas>
+    <h2>Forecast Grid Cells</h2>
+    <p>Hover over a grid cell to view its coordinates.</p>
+    <div id="home-map-container"> <div id="home-map"></div>
     </div>
-  </section>
-
-  <section id="data-table-section">
-      <h2>Forecast Data Table</h2>
-      <table id="onset-table">
-          <thead>
-            <tr><th>Lat</th><th>Lon</th><th>Initiation Time</th><th>Week 1</th><th>Week 2</th><th>Week 3</th><th>Week 4</th><th>Later</th></tr>
-          </thead>
-          <tbody>
-            </tbody>
-        </table>
-  </section>
-
+    <p><a href="advanced.html" >Advanced Information</a></p>
+    <p> Click <a id="download-forecast-link" href="assets/data/blend_output_summary.csv">here</a>
+      to download our <span id="download-link-description">latest forecast</span>.
+    </p>
   <section id="project-overview-section">
     <div class="project-overview-container">
         <h1>Technical Overview of Forecast Generation and Benchmark</h1>
 
-        <p>The onset of the Indian monsoon is a widespread seasonal phenomenon bringing consistent heavy rainfall that is critical to Indian agriculture. Predicting when the monsoon onset will occur can be hugely beneficial to decision-making, especially when farmers are given at least a couple of weeks' notice in advance. Subseasonal to seasonal (S2S - multiple weeks ahead) forecast production has transformed in recent decades with significant advances in the development of process-based models and the introduction of AI to the weather and climate forecasting field.</p>
+        <p>The onset of the Indian monsoon is a widespread seasonal phenomenon bringing consistent heavy rainfall that is critical to Indian agriculture. Predicting when the monsoon rains will start in a particular location can be hugely beneficial to decision-making, especially when farmers are given at least a couple of weeks' notice in advance. Subseasonal to seasonal (S2S - multiple weeks ahead) forecast production has been transformed in recent decades by significant advances in the development of process-based models and the introduction of artificial intelligence (AI) to weather forecasting.</p>
 
-        <p>Our operational forecast system provides forecasts of monsoon onset over India using a blend of forecasts from two open-source AI-based models and over a century of historical rainfall statistics, benchmarked (i.e., objectively validated) against both a conventional reference forecast and state-of-the-art numerical weather prediction (NWP) forecasts. The AI models used in this system were selected by evaluating a larger set of publicly available AI-based models that were capable of being transparently benchmarked and deployed operationally, and which also included rainfall forecasts in their output.</p>
+        <p>Our operational forecast system provides forecasts of the local start of monsoon rains across India using a blend of forecasts from two open-source AI-based models and over a century of historical rainfall statistics,  benchmarked (i.e., objectively validated) against both a conventional reference forecast and state-of-the-art numerical weather prediction (NWP) forecasts. The AI models used in this system were selected by evaluating a larger set of publicly available AI-based models that were capable of being transparently benchmarked and deployed operationally, and which also included rainfall forecasts in their output.</p>
 
-        <p>We employ the Moron-Robertson definition of monsoon onset (MR Index - Moron and Robertson, 2014) applied to the Indian monsoon season after the onset of the monsoon in Kerala, which was chosen to be useful to farmers’ planting decisions as informed by our fieldwork. We generate probabilistic forecasts on 2° grid boxes for the probability of onset one to four weeks after the day we make a forecast. To learn more about the procedure used to benchmark the models and generate the monsoon onset forecast, please refer to the documentation below.</p>
+        <p>We employ the Moron-Robertson definition of the start of monsoon rains (MR index; Moron and Robertson, 2014) applied after the onset of the monsoon in Kerala because of the role that nationally declared onset date plays in  farmers’ planting decisions, according to our fieldwork. We generate probabilistic forecasts on 2×2° grid boxes for the probability of local rainy season onset one to four weeks after the day we make a forecast. To learn more about the procedure used to benchmark the models and generate the forecast, please refer to the documentation below.</p>
 
         <h2>Definition of Monsoon Onset</h2>
-        <p>We use an agriculturally focused index that estimates the monsoon onset date for every year at 2 degree spatial resolution (2 degree ≃ 200 km). We identify whether the Indian Meteorology Department (IMD) has declared monsoon onset over Kerala (the first stage of the large-scale onset in most of the Indian subcontinent), and then apply the MR Index. This index was chosen because it links onset to a minimum rainfall threshold sufficient for seed germination and filters out "false starts", thus addressing crop-sowing requirements and significantly reducing the risk of crop failure due to premature planting (Burlig et al. 2025).</p>
-        <p>The MR onset index defines monsoon onset as the first wet day (≥1mm) of the first 5-day wet sequence from April 1 that accumulates at least the amount of the local climatological 5-day wet spell, provided it is not followed by any 10-day dry spell (≤5 mm in total) within the subsequent 30 days. We filter for onset in Kerala before applying the MR index criterion to screen out early season wet spells that are often not the true monsoon onset.</p>
+        <p>We use an agriculturally focused index that estimates the date of the start of local monsoon rains for every year at 2° spatial resolution (2° ≃ 200 km). We identify whether the India Meteorological Department (IMD) has declared monsoon onset over Kerala (the first stage of the large-scale onset over most of the Indian subcontinent), and then calculate the MR onset index in each grid box. This index was chosen because it links onset to a minimum rainfall threshold sufficient for seed germination and filters out "false starts", thus addressing crop-sowing requirements and significantly reducing the risk of crop failure due to premature planting (Burlig et al. 2024).</p>
+        <p>The MR onset index defines local rainy season onset as the first wet day (≥1 mm of rain) of the first 5-day wet sequence that accumulates at least the amount of the local climatological April-October 5-day wet spell, provided it is not followed by any 10-day dry spell (with ≤5 mm of total rainfall) within the subsequent 30 days. We filter for onset in Kerala before applying the MR index criterion to screen out  onsets that occur before the national date of monsoon onset that is widely disseminated by IMD and known by farmers.</p>
 
         <h3>Table 1. Criteria for Monsoon Onset to Be Declared within a 2° x 2° Grid Cell</h3>
         <table>
@@ -82,13 +71,13 @@
                 </tr>
                 <tr>
                     <td>No Dry Spell within 30 Days</td>
-                    <td>No 10-day period in the next thirty days receives less than 5 mm rain</td>
+                    <td>No 10-day period in the next thirty days receives less than 5 mm of rain</td>
                 </tr>
             </tbody>
         </table>
 
         <h2>Forecast Generation and Benchmarking Procedure</h2>
-        <p>To generate our forecasts operationally through a comprehensive benchmarking process, we initially selected five publicly available models, compared them over a recent period (2018-2023), identified the better performers, and then conducted more rigorous testing on our chosen models (summarized in Figure 1 and further described below).</p>
+        <p>To generate our forecasts operationally and evaluate them through a comprehensive benchmarking process, we initially selected five publicly available models, compared them over a recent period (2018-2023) and an earlier period (1965-1978), identified the better performers, and then conducted more rigorous testing on our chosen models (summarized in Figure 1 and further described below).</p>
 
         <div class="diagram-container-wrapper" role="figure" aria-labelledby="diagram-caption">
             <div class="diagram-container">
@@ -173,7 +162,7 @@
             <figcaption id="diagram-caption">Figure 1. Summary of forecast evaluation, generation, review, and dissemination procedure.</figcaption>
         </div>
         <h3>Models Compared</h3>
-        <p>We compared the outputs of multiple publicly available AI forecasting models, which were selected because they can be transparently benchmarked (i.e. all required data are available or can be produced), forecast rainfall, and can be used operationally for dissemination (Table 2).</p>
+        <p>We compared the outputs of multiple publicly available AI forecasting models, which were selected because they can be transparently benchmarked (i.e., all required data are available or can be produced), forecast rainfall, and can be used operationally for dissemination (Table 2).</p>
 
         <h3>Table 2. AI-based Models Compared for Potential Use in Onset Forecasts</h3>
         <table>
@@ -232,7 +221,8 @@
         </table>
 
         <h3>Forecast Model Selection Process</h3>
-        <p>From our five identified AI models, we produced forecasts from 1965 to 2024 to compare their performance historically and additionally used the European Centre for Medium-Range Weather Forecasts (ECMWF, 2023) IFS S2S model (a state-of-the-art physics-based model for weather forecasting with reforecasts available from 2004-2024 at 1.5° spatial resolution) for benchmarking against climatology derived from IMD rain gauge data (Pai et al. 2014). The true onset in each year is calculated by applying the index definition on the IMD’s gridded rain-gauge data. We compared each model’s performance to the true onset in each year using Mean Absolute Error (MAE), False Alarm Rate (FAR), and Miss Rate (MR) as our three metrics for error (summarized in Table 3). We compared these error rates to a baseline of using climatology alone (average over a historical period) as a forecast for the monsoon onset. The values are calculated for the 1965-1978 period and 2018-2024 period together. Of the five AI-based models we compared, we found NeuralGCM and AIFS performed the best.</p>
+        <p>From our five identified AI models, we produced forecasts over periods of 1965 to 2024 that fall outside the training period of the models. We then compare their performance against the European Centre for Medium-Range Weather Forecasts (ECMWF, 2023) IFS S2S model (a state-of-the-art physics-based model for weather forecasting with reforecasts available from 2004-2024 at 1.5° spatial resolution) and against a climatological predictor derived from IMD rain gauge data (Pai et al. 2014).</p>
+        <p>The true onset in each year is calculated by applying the MR index definition on the IMD’s gridded rain-gauge data. We compared each model’s performance to the true onset in each year using Mean Absolute Error (MAE), False Alarm Rate (FAR), and Miss Rate (MR) as our three metrics for error (summarized in Table 3). We compared these error rates to a baseline of using the climatological onset date (i.e., average onset date over a historical period) as a forecast. The values are calculated for the 1965-1978 period and 2018-2024 period together. Of the five AI-based models we compared, we found NeuralGCM and AIFS performed the best.</p>
 
         <h3>Table 3. Metrics for Model Benchmarking to Choose Best AI Models for Onset</h3>
         <table>
@@ -267,18 +257,19 @@
         </table>
 
         <h3>Forecast Generation Procedure</h3>
-        <p>To generate the forecasts in real-time, we run the best-performing AI models from our benchmarking analysis (neuralGCM and AIFS) and then blend them to further improve their performance, as combining information from multiple models typically leads to more informative predictions than using any individual model. We apply a model blending technique common in machine learning to combine information from historical IMD rain gauge data (1901-2024) as well as the 40-day rainfall predictions from the neuralGCM and AIFS models. We input these model predictions into a multinomial logistic regression (“blending”) model predicting the probability of onset in either the first week after the forecast initialization date, the second, third, or fourth weeks, or more than four weeks. This regression uses historical data to choose weights based on how predictive each source is both individually and jointly for monsoon onset. We find that for standard metrics for probabilistic forecasts (Brier Score and AUC) this model blend outperforms any individual model when predicting out-of-sample. The specific form of the blended model was chosen via a leave-one-year-out cross-validation technique designed to avoid overfitting, using 2000-2023 data.</p>
+        <p>To generate the forecasts in real-time, we run the best-performing AI models from our benchmarking analysis (NeuralGCM and AIFS) and then blend them to further improve their performance, as combining information from multiple models typically leads to more informative predictions than using any individual model. We apply a model blending technique common in machine learning to combine information from historical IMD rain gauge data (1901-2024) as well as the 40-day rainfall predictions from the NeuralGCM and AIFS models. Specifically, we input these model predictions into a multinomial logistic regression (“blending”) model predicting the probability of onset in either the first week after the forecast initialization date, the second, third, or fourth weeks, or more than four weeks. This regression uses historical data to choose weights based on how predictive each source is both individually and jointly for local rainy season onset.</p>
+        <p>We find that for standard metrics for probabilistic forecasts (Brier Score and AUC) this model blend outperforms any individual model when predicting out-of-sample. The specific form of the blended model was chosen via a leave-one-year-out cross-validation technique designed to avoid overfitting, using 2000-2023 data.</p>
 
         <h3>Evaluate and Synthesize Output</h3>
-        <p>Our forecast model can produce probabilities of monsoon onset occurrence several weeks in the future, outputting the likelihood of onset for 1 week, 2 weeks, 3 weeks, 4 weeks, or >4 weeks ahead. We evaluate these probabilities to identify the two-week period of maximum likelihood of occurrence. If a single week exceeds 70% chance of occurrence we communicate the likelihood as a one-week period.</p>
+        <p>Our forecast model can produce probabilities of monsoon onset occurrence several weeks in the future, outputting the likelihood of onset for 1 week, 2 weeks, 3 weeks, 4 weeks, or >4 weeks ahead. We evaluate these probabilities to identify the two-week period of maximum likelihood of occurrence. If a single week exceeds 70% chance of occurrence, we communicate the likelihood as a one-week period.</p>
 
         <h3>Forecast Dissemination Procedure</h3>
-        <p>We run the models daily and evaluate their outputs twice a week (Tuesdays and Thursdays) in a technical expert review meeting. As part of our Tuesday and Thursday briefings we review current synoptic features, observed rainfall, and rainfall forecasts by state-of-the-art physically based models. We compare this with the outputs of the blended model, review the level of confidence of the model, and run diagnostics on how the final forecast compares with our raw model outputs. On Tuesdays, we distill this information into clear, field-tested messages that can be texted to farmers, with updates after the Thursday evaluations if the models’ forecasts have significantly changed since the Tuesday briefings.</p>
+        <p>We run the AI models daily and systematically evaluate their outputs twice a week (Tuesdays and Thursdays) in a technical expert review meeting. As part of our Tuesday and Thursday briefings, we review current synoptic features, observed rainfall, and rainfall forecasts by state-of-the-art NWP models. We compare this with the outputs of the blended model, review the level of confidence of the model, and run diagnostics on how the final forecast compares with our raw model outputs. On Tuesdays, we distill this information into clear, field-tested messages that can be texted to farmers, with updates after the Thursday evaluations if the models’ forecasts have significantly changed since the Tuesday briefings.</p>
 
         <div class="references">
             <h2>References</h2>
             <ul>
-                <li>Burlig, Fiona et al. (2025). "The value of forecasts: Experimental evidence from developing-country agriculture." AEA RCT Registry. March 11. https://doi.org/10.1257/rct.8846-1.1</li>
+                <li>Burlig, Fiona and Jina, Amir and Kelley, Erin M and Lane, Gregory V and Sahai, Harshil (2024). "Long-Range Forecasts As Climate Adaptation: Experimental Evidence From Developing-Country Agriculture." National Bureau of Economic Research. Working Paper Series, 32173. 10.3386/w32173</li>
                 <li>Chen, L. Zhong, X., Zhang, F., Cheng, Y., Xu, Y., Qi, Y., and Li., H.(2023). ‘Fuxi: A cascade machine learning forecasting system for 15-day global weather forecast’. npj Climate and Atmospheric Science, 6(1):190.</li>
                 <li>European Center for Medium Range Weather Forecasts (2023). ‘IFS Documentation CY48R1 - Part V: Ensemble Prediction System.’ 10.21957/e529074162</li>
                 <li>Lam, R., Sanchez-Gonzalez, A. and Wilson, M., Wirnsberger, P., Fortunato, M., Alet, F., Ravuri, S., Ewalds, T. Eaton-Rosen, Z., Hu, W. and others (2022) ‘Learning skillful medium-range global weather forecasting.’ Science 382(6677): 1416-1421.</li>
