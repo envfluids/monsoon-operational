@@ -239,7 +239,7 @@ img {
   text-align: center;
   font-style: italic;
   color: #555;
-  margin-top: -10px; /* Space above caption */
+  margin-top: 10px; /* Space above caption */
   margin-bottom: 5px; /* Space below caption */
   font-size: 1em;
 }
