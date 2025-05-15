@@ -177,6 +177,9 @@ document.addEventListener('DOMContentLoaded', () => {
             minZoom: initialZoom,
             maxZoom: initialZoom,
             zoomControl: false,
+            dragging: false,
+            doubleClickZoom: false,
+            scrollWheelZoom: false,
             // No tile layer will be added. Background will be the GeoJSON or CSS background.
         }).setView(initialCenter, initialZoom);
 
