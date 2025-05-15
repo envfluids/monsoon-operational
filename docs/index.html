@@ -31,8 +31,8 @@
     <h1>Monsoon Onset Forecast</h1>
     <p id="forecast-issue-date" style="font-style: italic; color: #555;">Loading forecast issue date...</p>
   </header>
-    <h2>Forecast Grid Cells</h2>
-    <p>Hover over a grid cell to view its coordinates.</p>
+    <h2>Forecast Grid Boxes</h2>
+    <p>Hover over a grid box to view its coordinates.</p>
     <div id="home-map-container"> <div id="home-map"></div>
     </div>
     <p><a href="advanced.html" >Advanced Information</a></p>
@@ -47,13 +47,13 @@
 
         <p>Our operational forecast system provides forecasts of the local start of monsoon rains across India using a blend of forecasts from two open-source AI-based models and over a century of historical rainfall statistics,  benchmarked (i.e., objectively validated) against both a conventional reference forecast and state-of-the-art numerical weather prediction (NWP) forecasts. The AI models used in this system were selected by evaluating a larger set of publicly available AI-based models that were capable of being transparently benchmarked and deployed operationally, and which also included rainfall forecasts in their output.</p>
 
-        <p>We employ the Moron-Robertson definition of the start of monsoon rains (MR index; Moron and Robertson, 2014) applied after the onset of the monsoon in Kerala because of the role that nationally declared onset date plays in  farmers’ planting decisions, according to our fieldwork. We generate probabilistic forecasts on 2×2° grid boxes for the probability of local rainy season onset one to four weeks after the day we make a forecast. To learn more about the procedure used to benchmark the models and generate the forecast, please refer to the documentation below.</p>
+        <p>We employ the Moron-Robertson definition of the start of monsoon rains (MR onset index; Moron and Robertson, 2014) applied after the onset of the monsoon in Kerala because of the role that nationally declared onset date plays in  farmers’ planting decisions, according to our fieldwork. We generate probabilistic forecasts on 2×2° grid boxes for the probability of local rainy season onset one to four weeks after the day we make a forecast. To learn more about the procedure used to benchmark the models and generate the forecast, please refer to the documentation below.</p>
 
         <h2>Definition of Monsoon Onset</h2>
         <p>We use an agriculturally focused index that estimates the date of the start of local monsoon rains for every year at 2° spatial resolution (2° ≃ 200 km). We identify whether the India Meteorological Department (IMD) has declared monsoon onset over Kerala (the first stage of the large-scale onset over most of the Indian subcontinent), and then calculate the MR onset index in each grid box. This index was chosen because it links onset to a minimum rainfall threshold sufficient for seed germination and filters out "false starts", thus addressing crop-sowing requirements and significantly reducing the risk of crop failure due to premature planting (Burlig et al. 2024).</p>
-        <p>The MR onset index defines local rainy season onset as the first wet day (≥1 mm of rain) of the first 5-day wet sequence that accumulates at least the amount of the local climatological April-October 5-day wet spell, provided it is not followed by any 10-day dry spell (with ≤5 mm of total rainfall) within the subsequent 30 days. We filter for onset in Kerala before applying the MR index criterion to screen out  onsets that occur before the national date of monsoon onset that is widely disseminated by IMD and known by farmers.</p>
+        <p>The MR onset index defines local rainy season onset as the first wet day (≥1 mm of rain) of the first 5-day wet sequence that accumulates at least the amount of the local climatological April-October 5-day wet spell, provided it is not followed by any 10-day dry spell (with ≤5 mm of total rainfall) within the subsequent 30 days. We filter for onset in Kerala before applying the MR onset index criterion to screen out  onsets that occur before the national date of monsoon onset that is widely disseminated by IMD and known by farmers.</p>
 
-        <h3>Table 1. Criteria for Monsoon Onset to Be Declared within a 2° x 2° Grid Cell</h3>
+        <h3>Table 1. Criteria for Monsoon Onset to Be Declared within a 2° x 2° Grid Box</h3>
         <table>
             <thead>
                 <tr>
@@ -72,7 +72,7 @@
                 </tr>
                 <tr>
                     <td>5-Day Rainfall Accumulation Threshold</td>
-                    <td>The 5-day period starting on the day of onset must exhibit at least the climatological average amount of rain for a 5-day period between April and October for that grid cell.²</td>
+                    <td>The 5-day period starting on the day of onset must exhibit at least the climatological average amount of rain for a 5-day period between April and October for that grid box.²</td>
                 </tr>
                 <tr>
                     <td>No Dry Spell within 30 Days</td>
@@ -227,7 +227,7 @@
 
         <h3>Forecast Model Selection Process</h3>
         <p>From our five identified AI models, we produced forecasts over periods of 1965 to 2024 that fall outside the training period of the models. We then compare their performance against the European Centre for Medium-Range Weather Forecasts (ECMWF, 2023) IFS S2S model (a state-of-the-art physics-based model for weather forecasting with reforecasts available from 2004-2024 at 1.5° spatial resolution) and against a climatological predictor derived from IMD rain gauge data (Pai et al. 2014).</p>
-        <p>The true onset in each year is calculated by applying the MR index definition on the IMD’s gridded rain-gauge data. We compared each model’s performance to the true onset in each year using Mean Absolute Error (MAE), False Alarm Rate (FAR), and Miss Rate (MR) as our three metrics for error (summarized in Table 3). We compared these error rates to a baseline of using the climatological onset date (i.e., average onset date over a historical period) as a forecast. The values are calculated for the 1965-1978 period and 2018-2024 period together. Of the five AI-based models we compared, we found NeuralGCM and AIFS performed the best.</p>
+        <p>The true onset in each year is calculated by applying the MR onset index definition on the IMD’s gridded rain-gauge data. We compared each model’s performance to the true onset in each year using Mean Absolute Error (MAE), False Alarm Rate (FAR), and Miss Rate (MR) as our three metrics for error (summarized in Table 3). We compared these error rates to a baseline of using the climatological onset date (i.e., average onset date over a historical period) as a forecast. The values are calculated for the 1965-1978 period and 2018-2024 period together. Of the five AI-based models we compared, we found NeuralGCM and AIFS performed the best.</p>
 
         <h3>Table 3. Metrics for Model Benchmarking to Choose Best AI Models for Onset</h3>
         <table>
