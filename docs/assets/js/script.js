@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
         forecastChart = new Chart(ctx, { /* ... existing chart config ... */
             type: 'bar',
             data: { labels: [], datasets: [{ label: 'Forecast Probability', data: [], backgroundColor: 'rgba(75, 192, 192, 0.6)', borderColor: 'rgba(75, 192, 192, 1)', borderWidth: 1 }] },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: 'Click a map cell to view forecast' }, legend: { display: false } }, scales: { y: { beginAtZero: true, max: 1.0, title: { display: true, text: 'Probability' } }, x: { title: { display: true, text: 'Forecast Period' } } } }
+            options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: 'Click a grid box to view forecast' }, legend: { display: false } }, scales: { y: { beginAtZero: true, max: 1.0, title: { display: true, text: 'Probability' } }, x: { title: { display: true, text: 'Forecast Period' } } } }
         });
     }
 
