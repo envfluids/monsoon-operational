@@ -43,6 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
         map.getPane('geoJsonPaneAdvanced').style.zIndex = 350;
         map.getPane('geoJsonPaneAdvanced').style.pointerEvents = 'none';
 
+        map.createPane('geoJsonPaneAdvancedState'); // Use a specific pane name
+        map.getPane('geoJsonPaneAdvancedState').style.zIndex = 300;
+        map.getPane('geoJsonPaneAdvancedState').style.pointerEvents = 'none';
+
         fetch(indiaGeoPath)
             .then(response => {
                 if (!response.ok) throw new Error('Network response was not ok: ' + response.statusText);
@@ -51,12 +55,40 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(geojsonData => {
                 L.geoJSON(geojsonData, {
                     pane: 'geoJsonPaneAdvanced',
-                    style: { color: "#000000", fillColor: "#FFFFFF", weight: 1, opacity: 0.8, fillOpacity: 1 },
+                    style: { color: "#000000", fillColor: "#FFFFFF", weight: 1, opacity: 1, fillOpacity: 0 },
                     interactive: false
                 }).addTo(map);
                 console.log("India GeoJSON layer added to advanced map.");
             })
             .catch(error => console.error('Error fetching/adding GeoJSON for advanced map:', error));
+        fetch(indiaStateGeoPath)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok for advanced map GeoJSON: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(geojsonData => {
+                L.geoJSON(geojsonData, {
+                    pane: 'geoJsonPaneAdvancedState', // Assign to the custom pane
+                    style: function (feature) {
+                        return {
+                            color: "#333333",      // Dark grey outline for India
+                            fillColor: "#FFFFFF",  // White fill for India
+                            weight: 0.7,
+                            opacity: 0.3,
+                            fillOpacity: 1,       // Solid white fill
+                            dashArray: '1, 2'
+                        };
+                    },
+                    interactive: false // The GeoJSON layer itself should not be interactive
+                }).addTo(map);
+                console.log("India GeoJSON layer added to advanced map.");
+            })
+            .catch(error => {
+                console.error('Error fetching or adding GeoJSON layer to advanced map:', error);
+                alert('Could not load the India map outline for the advanced page.');
+            });          
     }
 
     function initChartAdvanced() {
