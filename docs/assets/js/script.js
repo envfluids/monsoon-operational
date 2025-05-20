@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- Configuration (mostly shared) ---
-    const csvUrl = 'assets/data/blend_output_summary.csv';
+    const csvUrl = 'assets/data/merged_output.csv';
     const initialCenter = [23, 79.9629]; // Approx center of India
     const initialCenterAdv = [23, 72]; // Approx center of India
     const initialZoom = 4.3;
@@ -291,30 +291,70 @@ document.addEventListener('DOMContentLoaded', () => {
         data.forEach(row => {
             const lat = row.lat;
             const lon = row.lon;
-            if (isValidNumber(row.later)) {
-            // Only proceed to create the rectangle if 'row.later' is a valid number
-            const cellBounds = [[lat - 1.0, lon - 1.0], [lat + 1.0, lon + 1.0]];
 
-            const rectangle = L.rectangle(cellBounds, {
-                color: "#555555",    // Border color for grid cells
-                weight: 0.8,          // Thin border
-                opacity: 1,
-                fillColor: "#007bff", // Can be any color or transparent
-                fillOpacity: 0.05,     // Very transparent fill, or 0 for no fill
-                interactive: true
-            });
+            if (isValidNumber(lat) && isValidNumber(lon) && isValidNumber(row.later)) {
+                const rawMessage = row.forecast_message;
+                let messageHtml = 'Forecast details not available.'; // Default message if processing results in empty
 
-            const tooltipContent = `Lat: ${lat.toFixed(1)}&deg; N<br>Lon: ${lon.toFixed(1)}&deg; E`; // Added 'Later' value to tooltip
-            rectangle.bindTooltip(tooltipContent, {
-                sticky: false,
-                permanent: false,
-                direction: 'top',
-                opacity: 0.9,
-                className: 'home-tooltip'
-            });
+                if (typeof rawMessage === 'string' && rawMessage.trim() !== '') {
+                    let messageContent = rawMessage;
+                    const firstNewlineIndex = messageContent.indexOf('\n\n');
 
-            homeGridLayer.addLayer(rectangle);
-        }
+                    if (firstNewlineIndex !== -1) {
+                        // If a newline character exists, take the substring *after* the first newline.
+                        // This effectively removes the first line.
+                        messageContent = messageContent.substring(firstNewlineIndex + 1);
+                    } else {
+                        // If there's no newline character, it means the message is a single line.
+                        // Removing the "first line" of a single-line message means the message becomes empty.
+                        messageContent = "";
+                    }
+
+                    // Now, replace any remaining newline characters in the (potentially modified) messageContent
+                    // with <br> tags for HTML display.
+                    messageHtml = messageContent.replace(/\n\n/g, '<br>');
+
+                    // If after removing the first line, the messageHtml is empty (or only whitespace),
+                    // set a default placeholder.
+                    if (messageHtml.trim() === '') {
+                        messageHtml = 'Forecast details not available.';
+                    }
+
+                } else if (rawMessage) { // If it exists but isn't a string (e.g. null, undefined but not empty)
+                    console.warn(`Forecast message for lat: ${lat}, lon: ${lon} is not a string:`, rawMessage);
+                    messageHtml = 'Forecast data invalid.';
+                }
+                // If rawMessage was undefined or null from the start,
+                // messageHtml will remain 'Forecast details not available.'
+
+                const cellBounds = [[lat - 1.0, lon - 1.0], [lat + 1.0, lon + 1.0]];
+
+                const rectangle = L.rectangle(cellBounds, {
+                    color: "#555555",
+                    weight: 0.8,
+                    opacity: 1,
+                    fillColor: "#007bff",
+                    fillOpacity: 0.05,
+                    interactive: true
+                });
+
+                const tooltipContent = `Lat: ${lat.toFixed(1)}&deg; N, Lon: ${lon.toFixed(1)}&deg; E<br>${messageHtml}`;
+                rectangle.bindTooltip(tooltipContent, {
+                    // sticky: false,
+                    // permanent: false,
+                    direction: 'top',
+                    opacity: 0.9,
+                    className: 'home-tooltip'
+                });
+
+                homeGridLayer.addLayer(rectangle);
+            } else {
+                if (!isValidNumber(lat) || !isValidNumber(lon)) {
+                    // console.warn("Skipping row due to invalid lat/lon:", row);
+                } else if (!isValidNumber(row.later)) {
+                    // console.log(`Skipping row for home map (lat: ${lat}, lon: ${lon}) because 'row.later' is not a valid number:`, row.later);
+                }
+            }
         });
 
         homeGridLayer.addTo(homeMap);
@@ -432,7 +472,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Update the "Forecast Issued: ..." display
                 if (issueDatePlaceholderElement) {
                     const formattedDisplayDate = formatLatestDateForDisplay(rawDateStr);
-                    issueDatePlaceholderElement.textContent = `Forecast Issued: ${formattedDisplayDate}`;
+                    issueDatePlaceholderElement.textContent = `Forecast Issued ${formattedDisplayDate}`;
                 }
 
                 // Update the download link and its description
@@ -441,7 +481,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const { yearStr, monthStrPadded, dayStrPadded } = dateParts;
 
                     // Update link description text
-                    downloadLinkDescSpan.textContent = `latest forecast (issued ${monthStrPadded}/${dayStrPadded})`;
+                    downloadLinkDescSpan.textContent = `latest forecast messages`;
 
                     // Set the dynamic download filename
                     const downloadFileName = `monsoon_forecast_${yearStr}${monthStrPadded}${dayStrPadded}.csv`;

@@ -21,6 +21,14 @@ header, section {
   padding-top: 10px;
 }
 
+.static-chart{
+  flex: 1; /* Allow chart to grow */
+  margin: auto;
+  height: auto;
+  width: 50%;
+  font-size: 1.2em;
+}
+
 .home-tooltip{
   background-color: white;
   border-radius: 5px;
