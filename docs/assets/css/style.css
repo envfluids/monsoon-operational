@@ -232,7 +232,7 @@ img {
 }
 
 .diagram-container-wrapper { /* Wrapper to constrain width and center */
-  max-width: 100%; /* Adjust as needed, or use a pixel value like 900px */
+  max-width: 80%; /* Adjust as needed, or use a pixel value like 900px */
   margin: 20px auto; /* Centers the diagram if max-width is less than container */
   font-family: Arial, Helvetica, sans-serif;
   color: #333;
