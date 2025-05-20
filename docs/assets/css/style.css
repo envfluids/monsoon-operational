@@ -25,7 +25,8 @@ header, section {
   flex: 1; /* Allow chart to grow */
   margin: auto;
   height: auto;
-  width: 50%;
+  /* width: 50%; */
+  max-width: 800px;
   font-size: 1.2em;
 }
 
