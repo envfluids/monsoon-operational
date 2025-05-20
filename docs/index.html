@@ -29,23 +29,21 @@
 <body>
   <header>
     <h1>Agriculturally Relevant Rainy Season Onset Forecast</h1>
-    <p id="forecast-issue-date" style="font-style: italic; color: #555;">Loading forecast issue date...</p>
+    <h2 id="forecast-issue-date" style="color: #000000; font-size: x-large;">Loading forecast issue date...</p>
   </header>
-    <h2>Forecast Grid Boxes</h2>
-    <p>Hover over a grid box to view its coordinates.</p>
+    <p>Hover over a grid box to view the corresponding forecast message.</p>
     <div id="home-map-container"> <div id="home-map"></div>
     </div>
-    <p><a href="advanced.html" >Advanced Information</a></p>
     <p> Click <a id="download-forecast-link" href="assets/data/message_templates_output_eng.csv">here</a>
-      to download our <span id="download-link-description">latest forecast</span>.
-    </p>
-  <section id="project-overview-section">
+      to download the <span id="download-link-description">latest forecast</span>.
+    <p><a href="advanced.html" >Advanced Information</a>: detailed forecast probabilities and messages.</p>
+    <section id="project-overview-section">
     <div class="project-overview-container">
         <h1>Technical Overview of Forecast Generation and Benchmark</h1>
 
-        <p>The onset of the Indian monsoon is a widespread seasonal phenomenon bringing consistent heavy rainfall that is critical to Indian agriculture. Predicting when the monsoon rains will start in a particular location can be hugely beneficial to decision-making, especially when farmers are given at least a couple of weeks' notice in advance. Subseasonal to seasonal (S2S - multiple weeks ahead) forecast production has been transformed in recent decades by significant advances in the development of process-based models and the introduction of artificial intelligence (AI) to weather forecasting.</p>
+        <p>The onset of the Indian monsoon is a widespread seasonal phenomenon bringing consistent heavy rainfall that is critical to Indian agriculture. Predicting when the monsoon rains will start in a particular location can be hugely beneficial to decision-making, especially when farmers are given at least a couple of weeks' notice in advance. Forecast skill at daily to multi-week time scales has been transformed in the last few decades, and more recently, by significant advances in the development of process-based models and the introduction of artificial intelligence (AI) to weather forecasting.</p>
 
-        <p>Our operational forecast system provides forecasts of the local start of monsoon rains across India using a blend of forecasts from two open-source AI-based models and over a century of historical rainfall statistics,  benchmarked (i.e., objectively validated) against both a conventional reference forecast and state-of-the-art numerical weather prediction (NWP) forecasts. The AI models used in this system were selected by evaluating a larger set of publicly available AI-based models that were capable of being transparently benchmarked and deployed operationally, and which also included rainfall forecasts in their output.</p>
+        <p>Our operational system provides forecasts of the local start of monsoon rains across India using a blend of two open-source AI-based models and over a century of historical rainfall statistics,  benchmarked (i.e., objectively validated) against both a conventional reference and state-of-the-art numerical weather prediction (NWP) forecasts. The AI models used in this system were selected by evaluating a larger set of publicly available AI-based models that were capable of being transparently benchmarked and deployed operationally, and which also included rainfall forecasts in their output.</p>
 
         <p>We employ the Moron-Robertson definition of the start of monsoon rains (MR index; Moron and Robertson, 2014) applied after the onset of the monsoon in Kerala because of the role that nationally declared onset date plays in  farmers’ planting decisions, according to our fieldwork. We generate probabilistic forecasts on 2×2° grid boxes for the probability of local rainy season onset one to four weeks after the day we make a forecast. To learn more about the procedure used to benchmark the models and generate the forecast, please refer to the documentation below.</p>
 
@@ -124,9 +122,9 @@
                         <div class="flow-arrow-container"><div class="flow-arrow"></div></div>
                         <div class="block evaluation-step secondary-eval has-shadow has-rounded-corners">
                             <h3>Secondary Evaluation</h3>
-                            <p><strong>Metrics:</strong> MAE, FAR, MR Brier, AUC (probabilistic)</p>
+                            <p><strong>Metrics:</strong> MAE, FAR, MR, AUC (probabilistic)</p>
                             <p><strong>Baseline:</strong> Climatology</p>
-                            <p><strong>Period:</strong> 1965-1979, 2018-2023</p>
+                            <p><strong>Period:</strong> 1965-1978, 2018-2023</p>
                         </div>
                         <div class="flow-arrow-container"><div class="flow-arrow"></div></div>
                         <div class="block evaluation-step chosen-models has-shadow has-rounded-corners alt-bg">
@@ -159,7 +157,7 @@
                         <div class="flow-arrow-container"><div class="flow-arrow"></div></div>
                         <div class="block process-step disseminate-forecasts has-rounded-corners alt-bg">
                             <h3>Disseminate Forecasts</h3>
-                            <p>SMS messages created based on fieldwork and with review by Indian government authorities</p>
+                            <p>Messages created based on fieldwork and with review by Indian government authorities</p>
                         </div>
                     </div>
                 </section>
