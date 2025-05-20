@@ -292,7 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const lat = row.lat;
             const lon = row.lon;
 
-            if (isValidNumber(lat) && isValidNumber(lon) && isValidNumber(row.later)) {
+            if (isValidNumber(lat) && isValidNumber(lon) && row.forecast_message) {
                 const rawMessage = row.forecast_message;
                 let messageHtml = 'Forecast details not available.'; // Default message if processing results in empty
 
