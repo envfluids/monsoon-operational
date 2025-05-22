@@ -4,8 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const csvUrl = 'assets/data/message_templates_output_eng.csv';
     const initialCenter = [23, 79.9629]; // Approx center of India
     const initialZoom = 4.3;
-    const indiaGeoPath = 'assets/geography/india-osm.geojson';
-    const indiaStateGeoPath = 'assets/geography/india.geojson';
+    const indiaGeoPath = 'assets/geography/india_country.geojson';
+    const indiaStateGeoPath = 'assets/geography/india_states.geojson';
     const latestDateFilePath = 'assets/data/latest.txt';
 
     // Variables for advanced map
