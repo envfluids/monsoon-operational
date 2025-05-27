@@ -269,6 +269,9 @@
         <h3>Forecast Dissemination Procedure</h3>
         <p>We run the AI models daily and systematically evaluate their outputs twice a week (Tuesdays and Thursdays) in a technical expert review meeting. As part of our Tuesday and Thursday briefings, we review current synoptic features, observed rainfall, and rainfall forecasts by state-of-the-art NWP models. We compare this with the outputs of the blended model, review the level of confidence of the model, and run diagnostics on how the final forecast compares with our raw model outputs. On Tuesdays, we distill this information into clear, field-tested messages that can be sent to farmers via SMS, as well as other platforms, with updates after the Thursday evaluations if the models' forecasts have significantly changed since the Tuesday briefings.</p>
 
+        <h3>Evaluating This Year's Forecasts</h3>
+        <p>Once IMD rain gauge data is available for this year's monsoon season, we will score our forecasts on our primary probabilistic metrics (Brier Score and AUC), as well as the fraction of instances in which the period we identified as having maximum likelihood of onset contained the true agriculturally-relevant onset. We will compare these to a climatological benchmark predictor based on past IMD rain gauge data.</p>
+
         <section id="acknowledgments">
           <h2>Acknowledgments</h2>
           <p>We thank the University of Chicago Research Computing Center and Data Science Institute for providing the high-performance computing resources that make these forecasts possible.</p>
@@ -291,7 +294,7 @@
         </div>
         <h2></h2>
         <p><small>¹ Monsoon Onset over Kerala is defined using the <a href="https://mausam.imd.gov.in/imd_latest/contents/onset.php" target="_blank">IMD Definition</a>: if after 10th May, 60% of the available 14 weather stations in Kerala report rainfall of 2.5 mm or more for two consecutive days, the onset over Kerala is declared on the 2nd day, provided the some other criteria (e.g. Depth of westerlies should be maintained up to 600 hPa) are also in concurrence. See link for detailed information.</small></p>
-        <p><small>² Climatological average during April-October is calculated over the period from 1901 to 2023, based on observed rain-gauge data from IMD. The ground truth dataset is IMD's rain-gauge data available at 1º resolution from 1901-2024 (Pai et al. 2014).</small></p>
+        <p><small>² Climatological average during April-October is calculated over the period from 1901 to 2023, based on observed rain-gauge data from IMD. The ground truth dataset is IMD's rain-gauge data available at 1º resolution from 1901-2024 (Pai et al. 2014), regridded to a 2º resolution using standard conservative remapping techniques.</small></p>
     </div>
   </section>
   <footer>
