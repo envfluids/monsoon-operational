@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (typeof rawMessage === 'string' && rawMessage.trim() !== '') {
                     let messageContent = rawMessage;
-                    const firstNewlineIndex = messageContent.indexOf('\n\n');
+                    const firstNewlineIndex = messageContent.indexOf('\n');
 
                     if (firstNewlineIndex !== -1) {
                         // If a newline character exists, take the substring *after* the first newline.
