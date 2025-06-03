@@ -6,6 +6,7 @@ body {
   /* max-width: 1200px; Allow wider view for map+chart */
   margin-left: auto;
   margin-right: auto;
+  background-color: #ffffff; /* Light gray background for the page */
 }
 
 header, section {
@@ -19,9 +20,76 @@ header, section {
   margin-top: 10px;
   border-top: 1px solid #ddd;
   padding-top: 10px;
+  margin-bottom: 20px;
 }
 
-.static-chart{
+/* Forecast Section Styles */
+.forecast-section {
+  margin: auto;
+  max-width: 800px; /* Increased max-width for better centering */
+  padding: 10px;
+}
+
+.forecast-caption {
+  font-size: 0.95em;
+  color: #333;
+  margin-bottom: 25px;
+  padding: 10px;
+  background-color: #e9ecef; /* Light background for caption */
+  border-left: 4px solid #007bff; /* Accent border */
+  border-radius: 4px;
+}
+
+.forecast-post {
+  background-color: #ffffff; /* White background for posts */
+  border: 1px solid #ddd;    /* Light border around posts */
+  border-radius: 8px;        /* Rounded corners for posts */
+  padding: 20px;             /* Padding inside each post */
+  margin-bottom: 25px;       /* Space between posts */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Subtle shadow for depth */
+}
+
+.forecast-post-title {
+  color: #000000;
+  font-size: 1.5em; /* Slightly larger title for posts */
+  margin-top: 0;      /* Remove default top margin */
+  margin-bottom: 15px;
+  border-bottom: 1px solid #eee; /* Separator under title */
+  padding-bottom: 10px;
+}
+
+.forecast-post img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1rem auto; /* Center image and add some vertical margin */
+  border-radius: 4px; /* Slightly rounded corners for images */
+}
+
+.forecast-post p {
+  font-size: 0.9em;
+  color: #333;
+  line-height: 1.6;
+}
+
+.forecast-post p a img { /* Style for the Zenodo badge */
+  display: inline;
+  vertical-align: middle;
+  height: 1.2em;
+  margin-left: 5px;
+}
+
+.post-separator {
+  border: 0;
+  height: 1px;
+  background-color: #ccc; /* Lighter separator */
+  margin: 30px auto; /* More space around separator */
+  max-width: 750px; /* Consistent width with posts */
+}
+/* End Forecast Section Styles */
+
+
+.static-chart{ /* Retained for potential future use or if something was missed, but new forecast posts are styled above */
   flex: 1; /* Allow chart to grow */
   margin: auto;
   height: auto;
@@ -91,21 +159,21 @@ header, section {
   clear: both; /* Ensure table appears below map/chart if they wrap */
 }
 
-table {
+table { /* General table, for Technical Overview */
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem; /* Space above table */
 }
 
-h2 {
+h2 { /* General h2, for Technical Overview */
   max-width: 900px;
 }
 
-thead {
+thead { /* General thead, for Technical Overview */
   background: #f0f0f0;
 }
 
-th, td {
+th, td { /* General th, td for Technical Overview */
   padding: 0.5rem;
   border: 1px solid #ccc;
   text-align: center;
@@ -113,7 +181,7 @@ th, td {
 }
 
 /* Image styling - keep if still relevant */
-img {
+img { /* General img styling - overridden by .forecast-post img for forecast images */
   display: block;
   max-width: 100%;
   height: auto;
@@ -157,14 +225,20 @@ img {
   display: inline-block; /* Needed if using flex */
 }
 
-/* Styles for the Project Overview Section */
+/* Styles for the Project Overview Section - UNTOUCHED AS REQUESTED */
 .project-overview-container {
     /*margin: 30px auto; /* Added top/bottom margin for spacing */
-    background: #fff;
+    background: #fff; /* Changed from #fff to keep consistency if body bg changes */
     /* padding: 20px; */
     font-family: Arial, sans-serif; /* Basic font styling for this section */
     line-height: 1.6;
     color: #333;
+    margin-top: 30px; /* Added to give space from forecast posts */
+    padding: 20px; /* Added padding for better separation */
+    border-radius: 8px; /* Consistent with post styling */
+    border: 1px solid #ddd; /* Consistent with post styling */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Consistent with post styling */
+
 }
 .project-overview-container h1,
 .project-overview-container h2,
@@ -240,6 +314,7 @@ img {
   background-color: #f0f2f5; /* Light grey background for the diagram area (optional) */
   padding: 10px; /* Optional padding around the whole diagram */
   box-sizing: border-box;
+  border-radius: 8px; /* Consistent with post styling */
 }
 
 .diagram-container-wrapper figcaption { /* Style for the figcaption */
@@ -461,5 +536,9 @@ img {
   }
   .evaluation-step p, .process-step p, .selected-model-block {
       font-size: 0.8em;
+  }
+  /* Adjust forecast post title for smaller screens */
+  .forecast-post-title {
+    font-size: 1.3em;
   }
 }

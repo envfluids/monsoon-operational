@@ -9,34 +9,37 @@
 
   <title>HCF Monsoon Forecast</title>
 
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-     crossorigin=""/>
-
   <link rel="stylesheet" href="assets/css/style.css">
-
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-     crossorigin="" defer></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" defer></script>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
-
-  <script src="assets/js/script.js" defer></script>
 
 </head>
 <body>
   <header>
     <h1>Agriculturally Relevant Rainy Season Onset Forecast</h1>
-    <h2 id="forecast-issue-date" style="color: #000000; font-size: x-large;">Loading forecast issue date...</p>
+    <p class="disclaimer">
+      The contents of this page are provided solely for informational purposes based on independent analysis and available data. This is <strong>not</strong> an official forecast from the India Meteorological Department (IMD) or any government authority. For official weather information and warnings, please refer directly to the <a href="https://mausam.imd.gov.in" target="_blank">IMD Website</a> or official communications.
+    </p>
+    <section class="forecast-section">
+      <p class="forecast-caption">The five bars inside each 2° x 2° box correspond to the blended model's probability of onset occurring within the next 1, 2, 3, 4 weeks or later, respectively. Boxes are color-coded to mark the two consecutive weeks with the highest combined probability (see the legend). For this purpose the "later” category is counted as a single week, and either the first week or "later” may be highlighted on their own if their individual probability exceeds 65%. For details of the forecasts, see the technical overview below.</p>
+      <div class="forecast-post">
+        <h2 class="forecast-post-title">Forecast Issued: June 3, 2025</h2>
+        <img src="assets/images/map_bars_with_probs_country_2025-06-03.png" alt="Forecast map for June 3, 2025">
+        <p>The blended model's forecast probabilities and messages are archived on Zenodo: <a href="https://doi.org/10.5281/zenodo.15588265" target="_blank"> <img src="https://zenodo.org/badge/DOI/10.5281/zenodo.15588265.svg" alt="DOI" style="display: inline; vertical-align: middle; height: 1.2em;"></a></p>
+        <p> Click <a id="download-forecast-link" href="assets/data/messages_03_June_2025.csv">here</a> to download the latest forecast messages, which are translated into clear, field-tested messages (in Hindi, Punjabi, Marathi, Odia, and Banglasuch) and sent to farmers via SMS.</p>
+      </div>
+      <hr class="post-separator">
+      <div class="forecast-post">
+        <h2 class="forecast-post-title">Forecast Issued: May 27, 2025</h2>
+        <img src="assets/images/map_bars_with_probs_country_2025-05-27.png" alt="Forecast map for May 27, 2025">
+        <p>The blended model's forecast probabilities and messages are archived on Zenodo: <a href="https://doi.org/10.5281/zenodo.15527948" target="_blank"> <img src="https://zenodo.org/badge/DOI/10.5281/zenodo.15527948.svg" alt="DOI" style="display: inline; vertical-align: middle; height: 1.2em;"></a></p>
+      </div>
+      <hr class="post-separator">
+      <div class="forecast-post">
+        <h2 class="forecast-post-title">Forecast Issued: May 20, 2025</h2>
+        <img src="assets/images/map_bars_with_probs_country_2025-05-20.png" alt="Forecast map for May 20, 2025">
+        <p>The blended model's forecast probabilities and messages are archived on Zenodo: <a href="https://doi.org/10.5281/zenodo.15477259" target="_blank"> <img src="https://zenodo.org/badge/DOI/10.5281/zenodo.15477259.svg" alt="DOI" style="display: inline; vertical-align: middle; height: 1.2em;"></a></p>
+      </div>
+    </section>
   </header>
-    <p>Hover over a grid box to view the corresponding forecast message.</p>
-    <div id="home-map-container"> <div id="home-map"></div>
-    </div>
-    <p> Click <a id="download-forecast-link" href="assets/data/message_templates_output_eng.csv">here</a>
-      to download the <span id="download-link-description">latest forecast</span>.
-    <p><a href="advanced.html" >Advanced Information</a>: detailed forecast probabilities and messages.<br><br></p>
     <section id="project-overview-section">
     <div class="project-overview-container">
         <h1>Technical Overview of Forecast Generation and Benchmark</h1>
@@ -157,7 +160,7 @@
                         <div class="flow-arrow-container"><div class="flow-arrow"></div></div>
                         <div class="block process-step disseminate-forecasts has-rounded-corners alt-bg">
                             <h3>Disseminate Forecasts</h3>
-                            <p>Messages created based on fieldwork</p>
+                            <p>Distill into clear, field-tested messages (in Hindi, Punjabi, Marathi, Odia, and Banglasuch), sent to farmers via SMS</p>
                         </div>
                     </div>
                 </section>
