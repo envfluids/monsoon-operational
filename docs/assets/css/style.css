@@ -33,10 +33,10 @@ header, section {
 .forecast-caption {
   font-size: 0.95em;
   color: #333;
-  margin-bottom: 25px;
+  /* margin-bottom: 25px; */
   padding: 10px;
   background-color: #e9ecef; /* Light background for caption */
-  border-left: 4px solid #007bff; /* Accent border */
+  /* border-left: 4px solid #007bff; Accent border */
   border-radius: 4px;
 }
 
