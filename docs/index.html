@@ -20,11 +20,18 @@
     </p>
     <section class="forecast-section">
       <div class="forecast-post">
+        <h2 class="forecast-post-title">Forecast Issued: June 17, 2025</h2>
+        <img src="assets/images/map_bars_with_probs_country_2025-06-17.png" alt="Forecast map for June 17, 2025">
+        <p class="forecast-caption">The five bars inside each 2° x 2° box correspond to the blended model's probability of onset occurring within the next 1, 2, 3, 4 weeks or later, respectively. Boxes are color-coded to mark the two consecutive weeks with the highest combined probability (see the legend). For this purpose, the "later” category is counted as a single week, and either the first week or "later” may be highlighted on their own if their individual probability exceeds 65%. For details of the forecasts, see the technical overview below.</p>
+        <p>The blended model's forecast probabilities and messages are archived on Zenodo: <a href="https://doi.org/10.5281/zenodo.15683783" target="_blank"> <img src="https://zenodo.org/badge/DOI/10.5281/zenodo.15683783.svg" alt="DOI" style="display: inline; vertical-align: middle; height: 1.2em;"></a></p>
+        <p> Click <a id="download-forecast-link" href="assets/data/messages_17_June_2025.csv" download>here</a> to download the latest forecast messages in English, which are translated into clear, field-tested messages (in Hindi, Punjabi, Marathi, Odia, and Bangla) and sent to farmers via SMS.</p>
+      </div>
+      <hr class="post-separator">
+      <div class="forecast-post">
         <h2 class="forecast-post-title">Forecast Issued: June 12, 2025</h2>
         <img src="assets/images/map_bars_with_probs_country_2025-06-12.png" alt="Forecast map for June 12, 2025">
         <p class="forecast-caption">The five bars inside each 2° x 2° box correspond to the blended model's probability of onset occurring within the next 1, 2, 3, 4 weeks or later, respectively. Boxes are color-coded to mark the two consecutive weeks with the highest combined probability (see the legend). For this purpose, the "later” category is counted as a single week, and either the first week or "later” may be highlighted on their own if their individual probability exceeds 65%. For details of the forecasts, see the technical overview below.</p>
         <p>The blended model's forecast probabilities and messages are archived on Zenodo: <a href="https://doi.org/10.5281/zenodo.15651248" target="_blank"> <img src="https://zenodo.org/badge/DOI/10.5281/zenodo.15651248.svg" alt="DOI" style="display: inline; vertical-align: middle; height: 1.2em;"></a></p>
-        <p> Click <a id="download-forecast-link" href="assets/data/messages_12_June_2025.csv" download>here</a> to download the latest forecast messages in English, which are translated into clear, field-tested messages (in Hindi, Punjabi, Marathi, Odia, and Bangla) and sent to farmers via SMS.</p>
       </div>
       <hr class="post-separator">
       <div class="forecast-post">
@@ -59,6 +66,7 @@
     <section id="project-overview-section">
     <div class="project-overview-container">
         <h1>Technical Overview of Forecast Generation and Benchmark</h1>
+        <h4>To know more about the team curating the forecasts, click <a href="https://humancenteredforecasts.climate.uchicago.edu/forecasting-the-onset-of-the-indian-monsoon/" target="_blank"> here</a>.</h4>
 
         <p>The onset of the Indian monsoon is a widespread seasonal phenomenon bringing consistent heavy rainfall that is critically important to Indian agriculture. Predicting when the monsoon rains will start in a particular location can be hugely beneficial to decision-making, especially when farmers are given enough lead-time to make consequential decisions around planted area, crop choice, and other major non-marginal management decisions. Forecast skill at daily to multi-week time scales has been transformed in the last few decades, and more recently, by significant advances in the development of process-based models and the introduction of artificial intelligence (AI) to weather forecasting.</p>
 
@@ -70,7 +78,7 @@
         <p>An agriculturally focused index that estimates the date of the start of local monsoon rains for every year at 2° spatial resolution (2° ≃ 200 km at the equator) is used. First, whether the India Meteorological Department (IMD) has declared monsoon onset over Kerala (the first stage of the large-scale onset over most of the Indian subcontinent) is identified, and then the MR index is calculated in each grid box. This index was chosen because it links onset to a minimum rainfall threshold sufficient for seed germination and filters out "false starts", thus addressing crop-sowing requirements and significantly reducing the risk of crop failure due to premature planting (Burlig et al., 2024).</p>
         <p>The MR index defines local rainy season onset as the first wet day (≥1 mm of rain) of the first 5-day wet sequence that accumulates at least the amount of the local climatological April-October 5-day wet spell, provided it is not followed by any 10-day dry spell (with ≤5 mm of total rainfall) within the subsequent 30 days. Monsoon Onset over Kerala (MOK) is filtered for before the MR index criterion is applied to screen out onsets that occur before the first nationally-announced date of monsoon onset that occurs over mainland India. MOK is widely disseminated by IMD and known by farmers.</p>
 
-        <h3>Table 1. Criteria for Classification as Agriculturally Relevant Monsoon Onset within a 2° x 2° Grid Box</h3>
+        To know more about the team curating the forecasts, click here.Table 1. Criteria for Classification as Agriculturally Relevant Monsoon Onset within a 2° x 2° Grid Box</h3>
         <table>
             <thead>
                 <tr>
