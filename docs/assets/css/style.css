@@ -251,6 +251,7 @@ img { /* General img styling - overridden by .forecast-post img for forecast ima
 }
 .project-overview-container h1 { /* This is the main heading for the overview section */
     /* border-bottom: 2px solid #3498db; */
+    margin-top: 5px;
     margin-bottom: 0px;
     padding-bottom: 0px;
     font-size: 2em; /* Example font size */
@@ -573,7 +574,6 @@ img { /* General img styling - overridden by .forecast-post img for forecast ima
     padding-top: 0px;
     margin-top: 5px;
     margin-bottom: 20px;
-    /* border-bottom: 1px solid #eee; */
     padding-bottom: 10px;
     border-bottom: 2px solid #3498db;
 }
