@@ -246,8 +246,9 @@ img { /* General img styling - overridden by .forecast-post img for forecast ima
     color: #2c3e50;
 }
 .project-overview-container h1 { /* This is the main heading for the overview section */
-    border-bottom: 2px solid #3498db;
-    padding-bottom: 10px;
+    /* border-bottom: 2px solid #3498db; */
+    margin-bottom: 0px;
+    padding-bottom: 0px;
     font-size: 2em; /* Example font size */
 }
 .project-overview-container h2 {
@@ -541,4 +542,34 @@ img { /* General img styling - overridden by .forecast-post img for forecast ima
   .forecast-post-title {
     font-size: 1.3em;
   }
+}
+
+.archive-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 1em;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.archive-button:hover {
+  background-color: #0056b3;
+}
+
+.authorship {
+    text-align: left;
+    font-style: italic;
+    font-size: 1em;
+    color: #555;
+    padding-top: 0px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    /* border-bottom: 1px solid #eee; */
+    padding-bottom: 10px;
+    border-bottom: 2px solid #3498db;
 }
